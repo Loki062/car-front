@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://car-back-alpha.vercel.app/",
+  baseURL: "https://carros-back.vercel.app/",
 });
