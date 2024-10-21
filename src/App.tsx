@@ -149,6 +149,9 @@ const App: React.FC = () => {
         final_Date: formattedFinalDate,
       });
 
+       // Use a variável response aqui
+console.log("Agendamento criado com sucesso:", response.data);
+
       setBookings((prevBookings) => {
         const updatedBookings = { ...prevBookings };
         if (!updatedBookings[selectedDay]) {
