@@ -8,7 +8,7 @@ const monthNames: string[] = [
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
 
-// Interface para um agendamento
+// Interface para um agendamento de carro
 interface Booking {
   name: string;
   car: string;
@@ -64,7 +64,7 @@ const App: React.FC = () => {
     // Carregar agendamentos ao carregar a página
     const fetchBookings = async () => {
       try {
-        const response = await api.get(`/Appointment`);
+        const response = await api.get(`/appointments`); // Atualizado para o endpoint correto
         const data = response.data;
 
         const loadedBookings: { [key: number]: Booking[] } = {};
@@ -149,8 +149,7 @@ const App: React.FC = () => {
         final_Date: formattedFinalDate,
       });
 
-       // Use a variável response aqui
-console.log("Agendamento criado com sucesso:", response.data);
+      console.log("Agendamento criado com sucesso:", response.data);
 
       setBookings((prevBookings) => {
         const updatedBookings = { ...prevBookings };
@@ -272,7 +271,7 @@ console.log("Agendamento criado com sucesso:", response.data);
                 required
               />
 
-              <button type="submit">Salvar Agendamento</button>
+              <button type="submit">Agendar</button>
             </form>
 
             {renderBookings()}
