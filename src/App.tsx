@@ -141,7 +141,7 @@ const App: React.FC = () => {
     }
 
     try {
-      const response = await api.post(`/create-appointment`, {
+      const response = await api.post(`/create-car-appointments`, {
         name,
         car,
         placa,
