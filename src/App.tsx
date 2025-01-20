@@ -121,24 +121,30 @@ const App: React.FC = () => {
     if (selectedDay === null) return;
 
     const { name, car, placa, inital_date, final_Date } = formData;
+
+    if (!name || !car || !placa || !inital_date || !final_Date) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+  
     const formattedInitialDate = new Date(`${year}-${String(month + 1).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}T${inital_date}:00`).toISOString();
     const formattedFinalDate = new Date(`${year}-${String(month + 1).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}T${final_Date}:00`).toISOString();
 
     // Verificação de agendamentos sobrepostos
-    const startTime = new Date(formattedInitialDate).getTime();
-    const endTime = new Date(formattedFinalDate).getTime();
-    const isOverlapping = bookings[selectedDay]?.some((booking) => {
-      const bookingStart = new Date(booking.inital_date).getTime();
-      const bookingEnd = new Date(booking.final_Date).getTime();
-      return (
-        startTime < bookingEnd && endTime > bookingStart && booking.car === car
-      );
-    });
+     const startTime = new Date(formattedInitialDate).getTime();
+  const endTime = new Date(formattedFinalDate).getTime();
+  const isOverlapping = bookings[selectedDay]?.some((booking) => {
+    const bookingStart = new Date(booking.inital_date).getTime();
+    const bookingEnd = new Date(booking.final_Date).getTime();
+    return (
+      startTime < bookingEnd && endTime > bookingStart && booking.car === car
+    );
+  });
 
-    if (isOverlapping) {
-      alert("Erro: Já existe um agendamento para este horário com este carro.");
-      return;
-    }
+  if (isOverlapping) {
+    alert("Erro: Já existe um agendamento para este horário com este carro.");
+    return;
+  }
 
     try {
       const response = await api.post(`/create-car-appointments`, {
@@ -160,16 +166,15 @@ const App: React.FC = () => {
         return updatedBookings;
       });
 
-      handleCloseModal();
-    } catch (error: any) {
-      if (error.response) {
-        alert(`Erro: ${error.response.data.error || "Falha ao salvar o agendamento."}`);
-      } else {
-        alert("Erro ao conectar ao servidor.");
-      }
+    handleCloseModal();
+  } catch (error: any) {
+    if (error.response) {
+      alert(`Erro: ${error.response.data.error || "Falha ao salvar o agendamento."}`);
+    } else {
+      alert("Erro ao conectar ao servidor.");
     }
-  };
-
+  }
+};
   const renderBookings = () => {
     if (selectedDay === null || !bookings[selectedDay] || bookings[selectedDay].length === 0) {
       return <p>Não há agendamentos para este dia.</p>;
